@@ -17,7 +17,7 @@ void FileHandler::loadBinaryTree(BST& tree, const std::string& filename) {
     }
     file.close();
 }
-
+// azbest 
 void FileHandler::loadFromTextFile(BST& tree, const std::string& filename) {
     std::ifstream file(filename);
     int value;
