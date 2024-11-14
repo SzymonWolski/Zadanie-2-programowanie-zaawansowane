@@ -1,20 +1,91 @@
-﻿// z2pz.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
-
+﻿#include "BST.h"
+#include "FileHandler.h"
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+// Funkcja wyświetlająca menu programu
+void printMenu() {
+    std::cout << "Menu:\n"
+        << "1. Dodaj element\n"
+        << "2. Usuń element\n"
+        << "3. Usuń całe drzewo\n"
+        << "4. Szukaj elementu\n"
+        << "5. Wyświetl drzewo (preorder)\n"
+        << "6. Wyświetl drzewo (inorder)\n"
+        << "7. Wyświetl drzewo (postorder)\n"
+        << "8. Zapisz do pliku tekstowego\n"
+        << "9. Zapisz do pliku binarnego\n"
+        << "10. Wczytaj z pliku binarnego\n"
+        << "11. Wczytaj z pliku tekstowego\n"
+        << "0. Wyjście\n";
 }
 
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
+int main() {
+    BST tree; // Obiekt drzewa BST
+    int choice, value;
+    std::string filename;
 
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
+    // Pętla główna menu programu
+    while (true) {
+        printMenu();
+        std::cout << "Wybierz opcję: ";
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1: // Dodaj element
+            std::cout << "Podaj wartość do dodania: ";
+            std::cin >> value;
+            tree.add(value);
+            break;
+        case 2: // Usuń element
+            std::cout << "Podaj wartość do usunięcia: ";
+            std::cin >> value;
+            tree.remove(value);
+            break;
+        case 3: // Usuń całe drzewo
+            tree.clear();
+            std::cout << "Drzewo usunięte.\n";
+            break;
+        case 4: // Szukaj elementu
+            std::cout << "Podaj wartość do wyszukania: ";
+            std::cin >> value;
+            std::cout << (tree.find(value) ? "Znaleziono\n" : "Nie znaleziono\n");
+            break;
+        case 5: // Wyświetl drzewo preorder
+            std::cout << "Preorder: ";
+            tree.printPreorder();
+            break;
+        case 6: // Wyświetl drzewo inorder
+            std::cout << "Inorder: ";
+            tree.printInorder();
+            break;
+        case 7: // Wyświetl drzewo postorder
+            std::cout << "Postorder: ";
+            tree.printPostorder();
+            break;
+        case 8: // Zapisz do pliku tekstowego
+            std::cout << "Podaj nazwę pliku tekstowego: ";
+            std::cin >> filename;
+            tree.saveToTextFile(filename);
+            break;
+        case 9: // Zapisz do pliku binarnego
+            std::cout << "Podaj nazwę pliku binarnego: ";
+            std::cin >> filename;
+            FileHandler::saveBinaryTree(tree, filename);
+            break;
+        case 10: // Wczytaj z pliku binarnego
+            std::cout << "Podaj nazwę pliku binarnego: ";
+            std::cin >> filename;
+            FileHandler::loadBinaryTree(tree, filename);
+            break;
+        case 11: // Wczytaj z pliku tekstowego
+            std::cout << "Podaj nazwę pliku tekstowego: ";
+            std::cin >> filename;
+            FileHandler::loadFromTextFile(tree, filename);
+            break;
+        case 0: // Wyjście
+            return 0;
+        default:
+            std::cout << "Nieprawidłowy wybór.\n";
+        }
+    }
+}
