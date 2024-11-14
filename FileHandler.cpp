@@ -8,7 +8,7 @@ void FileHandler::saveBinaryTree(const BST& tree, const std::string& filename) {
         file.close();
     }
 }
-
+//aledlaczegomuszetorobic
 void FileHandler::loadBinaryTree(BST& tree, const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
     int value;
