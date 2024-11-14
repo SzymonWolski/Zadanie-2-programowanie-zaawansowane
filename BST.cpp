@@ -1,36 +1,42 @@
 #include "BST.h"
 
+// Konstruktor - inicjuje pusty korzeñ
 BST::BST() : root(nullptr) {}
 
+// Destruktor - usuwa ca³e drzewo przy zakoñczeniu
 BST::~BST() {
     clear();
 }
 
+// Prywatna metoda dodaj¹ca wêze³ do drzewa BST
 void BST::addNode(Node*& node, int value) {
     if (!node) {
-        node = new Node(value);
+        node = new Node(value); // Tworzy nowy wêze³, jeœli aktualny jest pusty
     }
     else if (value < node->data) {
-        addNode(node->left, value);
+        addNode(node->left, value); // Przechodzi do lewego poddrzewa
     }
     else if (value > node->data) {
-        addNode(node->right, value);
+        addNode(node->right, value); // Przechodzi do prawego poddrzewa
     }
 }
 
+// Publiczna metoda do dodawania wartoœci do drzewa
 void BST::add(int value) {
     addNode(root, value);
 }
 
+// Prywatna metoda usuwaj¹ca wêze³ o okreœlonej wartoœci
 BST::Node* BST::deleteNode(Node* node, int value) {
-    if (!node) return nullptr;
+    if (!node) return nullptr; // Jeœli wêze³ jest pusty, zakoñcz
     if (value < node->data) {
-        node->left = deleteNode(node->left, value);
+        node->left = deleteNode(node->left, value); // Szuka wêz³a w lewym poddrzewie
     }
     else if (value > node->data) {
-        node->right = deleteNode(node->right, value);
+        node->right = deleteNode(node->right, value); // Szuka wêz³a w prawym poddrzewie
     }
     else {
+        // Usuwa wêze³ i reorganizuje drzewo
         if (!node->left) {
             Node* temp = node->right;
             delete node;
@@ -42,6 +48,7 @@ BST::Node* BST::deleteNode(Node* node, int value) {
             return temp;
         }
 
+        // Znajduje najmniejszy wêze³ w prawym poddrzewie
         Node* temp = node->right;
         while (temp->left) temp = temp->left;
         node->data = temp->data;
@@ -50,10 +57,12 @@ BST::Node* BST::deleteNode(Node* node, int value) {
     return node;
 }
 
+// Publiczna metoda usuwaj¹ca wartoœæ z drzewa
 void BST::remove(int value) {
     root = deleteNode(root, value);
 }
 
+// Prywatna metoda rekurencyjna usuwaj¹ca ca³e drzewo
 void BST::deleteTree(Node* node) {
     if (!node) return;
     deleteTree(node->left);
@@ -61,15 +70,18 @@ void BST::deleteTree(Node* node) {
     delete node;
 }
 
+// Usuwa ca³e drzewo
 void BST::clear() {
     deleteTree(root);
     root = nullptr;
 }
 
+// Znajduje wêze³ o podanej wartoœci
 bool BST::find(int value) const {
     return findNode(root, value) != nullptr;
 }
 
+// Prywatna metoda rekurencyjna znajduj¹ca wêze³ o podanej wartoœci
 BST::Node* BST::findNode(Node* node, int value) const {
     if (!node) return nullptr;
     if (value == node->data) return node;
@@ -77,6 +89,7 @@ BST::Node* BST::findNode(Node* node, int value) const {
     return findNode(node->right, value);
 }
 
+// Metoda preorder - wyœwietla wêz³y w porz¹dku (root -> left -> right)
 void BST::preorder(Node* node) const {
     if (!node) return;
     std::cout << node->data << " ";
@@ -84,6 +97,7 @@ void BST::preorder(Node* node) const {
     preorder(node->right);
 }
 
+// Metoda inorder - wyœwietla wêz³y w porz¹dku (left -> root -> right)
 void BST::inorder(Node* node) const {
     if (!node) return;
     inorder(node->left);
@@ -91,6 +105,7 @@ void BST::inorder(Node* node) const {
     inorder(node->right);
 }
 
+// Metoda postorder - wyœwietla wêz³y w porz¹dku (left -> right -> root)
 void BST::postorder(Node* node) const {
     if (!node) return;
     postorder(node->left);
@@ -98,21 +113,25 @@ void BST::postorder(Node* node) const {
     std::cout << node->data << " ";
 }
 
+// Wyœwietla drzewo w porz¹dku preorder
 void BST::printPreorder() const {
     preorder(root);
     std::cout << std::endl;
 }
 
+// Wyœwietla drzewo w porz¹dku inorder
 void BST::printInorder() const {
     inorder(root);
     std::cout << std::endl;
 }
 
+// Wyœwietla drzewo w porz¹dku postorder
 void BST::printPostorder() const {
     postorder(root);
     std::cout << std::endl;
 }
 
+// Prywatna metoda zapisuj¹ca drzewo do pliku tekstowego
 void BST::writeToTextFile(Node* node, std::ofstream& file) const {
     if (!node) return;
     file << node->data << " ";
@@ -120,6 +139,7 @@ void BST::writeToTextFile(Node* node, std::ofstream& file) const {
     writeToTextFile(node->right, file);
 }
 
+// Zapisuje drzewo do pliku tekstowego
 void BST::saveToTextFile(const std::string& filename) const {
     std::ofstream file(filename);
     if (file.is_open()) {
