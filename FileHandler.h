@@ -3,7 +3,7 @@
 
 #include "BST.h"
 #include <string>
-//bambik
+//kochamc++
 class FileHandler {
 public:
     static void saveBinaryTree(const BST& tree, const std::string& filename);
@@ -11,4 +11,4 @@ public:
     static void loadFromTextFile(BST& tree, const std::string& filename);
 };
 
-#endif // womp womp
+#endif 
